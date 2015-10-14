@@ -28,6 +28,22 @@ std::tuple<double,double> get_min_max(const grid& g) {
   return minmax;
 }
 
+double get_max(const grid& g) {
+  const int height = g.get_height();
+  const int width = g.get_width();
+  assert(width > 0);
+  assert(height > 0);
+  double max = g.get(0,0);
+
+  for (int y=0; y!=height; ++y) {
+    for (int x=0; x!=width; ++x) {
+      const double z = g.get(x,y);
+      if (z > max) max = z;
+    }
+  }
+  return max;
+}
+
 QtWidget::QtWidget(
   QWidget *parent
 )
@@ -46,7 +62,7 @@ QtWidget::QtWidget(
   {
     QTimer * const timer{new QTimer(this)};
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(OnTimer()));
-    timer->setInterval(2);
+    timer->setInterval(1000);
     timer->start();
   }
 }
@@ -62,15 +78,6 @@ void QtWidget::OnTimer()
   ++z;
   m_simulation.goto_next_timestep();
 
-  {
-    std::stringstream s;
-    s << "Simulation at time "
-      << m_simulation.get_current_time()
-      << " (frame" << z << ")"
-    ;
-    this->setWindowTitle(s.str().c_str());
-
-  }
 
   const int height{m_simulation.get_plant_grid().get_height()};
   const int width{m_simulation.get_plant_grid().get_width()};
@@ -78,26 +85,29 @@ void QtWidget::OnTimer()
   QImage image(width,height,QImage::Format_RGB32);
   const grid& plant_grid = m_simulation.get_plant_grid();
   const grid& water_grid = m_simulation.get_water_grid();
-  const std::tuple<double,double> min_max_plants = get_min_max(plant_grid);
-  const double min_plants = std::get<0>(min_max_plants);
-  const double max_plants
-    = std::get<1>(min_max_plants) == std::get<0>(min_max_plants)
-    ? std::get<0>(min_max_plants) + 1.0
-    : std::get<0>(min_max_plants)
-  ;
+  const double min_plants = 0.0;
+  const double max_plants = get_max(plant_grid);
   assert(min_plants < max_plants);
   const double plants_range = max_plants - min_plants;
   assert(plants_range > 0.0);
-  const std::tuple<double,double> min_max_water = get_min_max(water_grid);
-  const double min_water = std::get<0>(min_max_water);
-  const double max_water
-    = std::get<1>(min_max_water) == std::get<0>(min_max_water)
-    ? std::get<1>(min_max_water) + 1.0
-    : std::get<1>(min_max_water)
-  ;
+  const double min_water = 0.0;
+  const double max_water = get_max(water_grid);
   assert(min_water < max_water);
   const double water_range = max_water - min_water;
   assert(water_range > 0.0);
+
+  {
+    std::stringstream s;
+    s << "Simulation at time "
+      << m_simulation.get_current_time()
+      << " (max_plants: " << max_plants
+      << ", max_water: " << max_water
+      << ", frame: " << z
+      << ")"
+    ;
+    this->setWindowTitle(s.str().c_str());
+
+  }
 
   for (int y=0; y!=height; ++y)
   {
