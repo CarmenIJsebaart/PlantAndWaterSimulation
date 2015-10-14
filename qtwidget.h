@@ -29,7 +29,7 @@ protected:
 private:
   Ui::QtWidget *ui;
   QPixmap m_pixmap;
-  Simulation m_simulation;
+  simulation m_simulation;
 
 private slots:
   void OnTimer();
