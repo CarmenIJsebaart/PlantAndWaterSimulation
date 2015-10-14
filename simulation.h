@@ -15,7 +15,7 @@ public:
 private:
   grid plant_densities;
   grid water_concentrations;
-  const double delta_t = 0.1;
+  const double delta_t = 0.001;
   double t;
 };
 

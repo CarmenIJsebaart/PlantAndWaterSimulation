@@ -62,7 +62,7 @@ QtWidget::QtWidget(
   {
     QTimer * const timer{new QTimer(this)};
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(OnTimer()));
-    timer->setInterval(1000);
+    timer->setInterval(100);
     timer->start();
   }
 }

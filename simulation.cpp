@@ -24,8 +24,8 @@ simulation::simulation()
     t{0.0}
 {
 
-  const int width = 10; //Horizontal number of steps
-  const int height = 10; //Vertical number of steps
+  const int width = 100; //Horizontal number of steps
+  const int height = 100; //Vertical number of steps
 
   //Create a 2D grid of water
   //Initialize the grid with zeros
