@@ -10,6 +10,7 @@ int main(int argc, char *argv[])
     const QRect screen = QApplication::desktop()->screenGeometry();
     w.move( screen.center() - w.rect().center() );
   }
+  w.setWindowState(Qt::WindowMaximized);
   w.show();
   return a.exec();
 }
