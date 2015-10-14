@@ -10,13 +10,6 @@
 #include <cassert>
 #include <ctime>
 
-class Simulation {
-  const grid& get_water_grid() const noexcept { return m_water_grid; }
-  const grid& get_plant_grid() const noexcept { return m_water_grid; }
-  void goto_next_timestep();
-  double get_current_time() const noexcept { return m_time; }
-};
-
 //  Floor map of the grid
 //
 //                          ----->
