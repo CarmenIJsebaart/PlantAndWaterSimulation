@@ -75,22 +75,16 @@ grid calculate_water_concentration_changes(
     grid downflow_water_concentrations,
     const double delta_t)
 {
-
-  grid water_concentration_changes (width, height);
+  assert(delta_t > 0.0);
+  grid water_concentration_changes(width, height);
   for(int x = 0; x < height; ++x)
   {
     for(int y = 0; y < width; ++y)
     {
+      const double w = water_concentrations.get(x, y);
+      const double p = plant_densities.get(x, y);
       const double water_concentration_change
-          = delta_t
-          *
-          (
-            a
-            - water_concentrations.get(x, y)
-            - (water_concentrations.get(x, y) * pow(plant_densities.get(x, y),2))
-            + (v * downflow_water_concentrations.get(x, y))
-          )
-          ;
+          = delta_t * ( a - w - (w * pow(p,2.0)) + (v * downflow_water_concentrations.get(x, y)));
       water_concentration_changes.set(x, y, water_concentration_change);
     }
   }
@@ -162,7 +156,9 @@ grid calculate_new_plant_densities(
     {
       const double current_plant_density = plant_densities.get(x, y);
       const double plant_density_change = plant_density_changes.get(x, y);
-      const double new_plant_density = current_plant_density + plant_density_change;
+      double new_plant_density = current_plant_density + plant_density_change;
+      if(new_plant_density < 0)
+        new_plant_density = 0;
       assert(current_plant_density >= 0.0);
       assert(new_plant_density >= 0.0);
       new_plant_densities.set(x, y, new_plant_density);

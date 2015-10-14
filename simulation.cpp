@@ -1,4 +1,22 @@
+#include <cassert>
+#include <random>
+#include <iostream>
 #include "simulation.h"
+
+///GetRandomUniform draws a random number from 0.0 to and excluding 1.0.
+///From http://www.richelbilderbeek.nl/CppGetRandomUniform.htm
+double GetRandomUniform()
+{
+  //rd is used only to initialize mt with a truly random seed
+  static std::random_device rd;
+  //mt generates random numbers
+  static std::mt19937 mt(rd());
+  //d puts these random numbers in the correct distribution
+  static std::uniform_real_distribution<double> d(0.0,1.0);
+  //The random value x gets drawn here
+  const double initial_plant_density{d(mt)};
+  return initial_plant_density;
+}
 
 simulation::simulation()
   : plant_densities(1,1),
@@ -19,19 +37,18 @@ simulation::simulation()
   //time steps have to be really small).
   //grid plant_densities = create_initial_plant_densities(parameters);
   plant_densities = grid(width, height);
-  const double initial_plant_density = 1;
   for(int x = 0; x < height; ++x)
   {
     for(int y = 0; y < width; ++y)
       {
+        const double initial_plant_density = GetRandomUniform() * 10.0;
+        assert(initial_plant_density >= 0.0 && initial_plant_density <= 10.0);
+        std::cout << initial_plant_density << '\n';
         plant_densities.set(x, y, initial_plant_density);
       }
   }
-
-
   t = 0.0;
 }
-
 
 void simulation::goto_next_timestep() {
   ///////////////////////////////////////////////
