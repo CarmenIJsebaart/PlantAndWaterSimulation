@@ -24,8 +24,8 @@ simulation::simulation()
     t{0.0}
 {
 
-  const int width = 10; //Horizontal number of steps
-  const int height = 10; //Vertical number of steps
+  const int width = 100; //Horizontal number of steps
+  const int height = 100; //Vertical number of steps
 
   //Create a 2D grid of water
   //Initialize the grid with zeros
@@ -41,8 +41,8 @@ simulation::simulation()
   {
     for(int y = 0; y < width; ++y)
       {
-        const double initial_plant_density = GetRandomUniform() * 10.0;
-        assert(initial_plant_density >= 0.0 && initial_plant_density <= 10.0);
+        const double initial_plant_density = GetRandomUniform() * 5.0;
+        assert(initial_plant_density >= 0.0 && initial_plant_density <= 5.0);
         std::cout << initial_plant_density << '\n';
         plant_densities.set(x, y, initial_plant_density);
       }
@@ -70,7 +70,7 @@ void simulation::goto_next_timestep() {
     water_concentrations
   );
 
-  const int a = 2;          //Water is supplied uniformly at rate a (Grass (see article))
+  const int a = 0.94;          //Water is supplied uniformly at rate a (Grass (see article))
   const double v = 182.5;   //Water flows downhill at speed v
 
   //Create a 2D grid where the water concentration changes can be stored

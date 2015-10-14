@@ -9,23 +9,24 @@ grid d_value_div_dx(
 {
   grid output_grid (width, height);
   double output_value;
+  assert(delta_height != 0.0);
   for(int y = 0; y < width; ++y)
   {
     for(int x = 0; x < height; ++x)
     {
       if((x > 0) && (x < height - 1))
       {
-       output_value = (input_grid.get(x + 1, y) - input_grid.get(x - 1, y)) / (2 * delta_height);
+        output_value = (input_grid.get(x + 1, y) - input_grid.get(x - 1, y)) / (2.0 * delta_height);
         output_grid.set(x, y, output_value);
       }
       else if(x == 0) //When x == 0 you cannot take x - 1, then you work outside the vector (pretend grid is a cilinder)
       {
-        output_value = (input_grid.get(x + 1, y) - input_grid.get(x + (height - 1), y)) / (2 * delta_height);
+        output_value = (input_grid.get(x + 1, y) - input_grid.get(x + (height - 1), y)) / (2.0 * delta_height);
         output_grid.set(x, y, output_value);
       }
       else if(x == height) //When x == height you cannot take x + 1, then you work outside the vector (pretend grid is a cilinder)
       {
-        output_value = (input_grid.get(x - x, y) - input_grid.get(x - 1, y)) / (2 * delta_height);
+        output_value = (input_grid.get(x - x, y) - input_grid.get(x - 1, y)) / (2.0 * delta_height);
         output_grid.set(x, y, output_value);
       }
     }
@@ -41,23 +42,24 @@ grid d_value_div_dy(
 {
   grid output_grid (width, height);
   double output_value;
+  assert(delta_width != 0.0);
   for(int x = 0; x < height; ++x)
   {
     for(int y = 0; y < width; ++y)
     {
       if((y > 0) && (y < width - 1))
       {
-        output_value = (input_grid.get(x, y + 1) - input_grid.get(x, y - 1)) / (2 * delta_width);
+        output_value = (input_grid.get(x, y + 1) - input_grid.get(x, y - 1)) / (2.0 * delta_width);
         output_grid.set(x, y, output_value);
       }
       else if(y == 0) //When y == 0 you cannot take y - 1, then you work outside the vector (pretend grid is a cilinder)
       {
-        output_value = (input_grid.get(x, y + 1) - input_grid.get(x, y + (width - 1))) / (2 * delta_width);
+        output_value = (input_grid.get(x, y + 1) - input_grid.get(x, y + (width - 1))) / (2.0 * delta_width);
         output_grid.set(x, y, output_value);
       }
       else if(y == width) //When y == height you cannot take y + 1, then you work outside the vector (pretend grid is a cilinder)
       {
-        output_value = (input_grid.get(x, y - y) - input_grid.get(x, y - 1)) / (2 * delta_width);
+        output_value = (input_grid.get(x, y - y) - input_grid.get(x, y - 1)) / (2.0 * delta_width);
         output_grid.set(x, y, output_value);
       }
     }
@@ -104,6 +106,10 @@ grid calculate_new_water_concentrations(
     for(int y = 0; y < width; ++y)
     {
       new_water_concentration = water_concentrations.get(x, y) + water_concentration_changes.get(x, y);
+      if(new_water_concentration < 0)
+        new_water_concentration = 0;
+      assert( water_concentrations.get(x, y) >= 0.0);
+      assert(new_water_concentration >= 0.0);
       new_water_concentrations.set(x, y, new_water_concentration);
     }
   }
@@ -130,7 +136,7 @@ grid calculate_plant_density_changes(
           = delta_t
           *
           (
-            (water_concentrations.get(x, y) * pow(plant_densities.get(x, y),2))
+            (water_concentrations.get(x, y) * pow((plant_densities.get(x, y)),2.0))
             - (plant_losses * plant_densities.get(x, y))
             + d2ndx2.get(x, y)
             + d2ndy2.get(x, y)
