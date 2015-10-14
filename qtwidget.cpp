@@ -86,12 +86,12 @@ void QtWidget::OnTimer()
   const grid& plant_grid = m_simulation.get_plant_grid();
   const grid& water_grid = m_simulation.get_water_grid();
   const double min_plants = 0.0;
-  const double max_plants = get_max(plant_grid);
+  const double max_plants = get_max(plant_grid) == 0.0 ? 1.0 : get_max(plant_grid);
   assert(min_plants < max_plants);
   const double plants_range = max_plants - min_plants;
   assert(plants_range > 0.0);
   const double min_water = 0.0;
-  const double max_water = get_max(water_grid);
+  const double max_water = get_max(water_grid) == 0.0 ? 1.0 : get_max(water_grid);
   assert(min_water < max_water);
   const double water_range = max_water - min_water;
   assert(water_range > 0.0);
@@ -100,8 +100,8 @@ void QtWidget::OnTimer()
     std::stringstream s;
     s << "Simulation at time "
       << m_simulation.get_current_time()
-      << " (max_plants: " << max_plants
-      << ", max_water: " << max_water
+      << " (max_plants: " << get_max(plant_grid)
+      << ", max_water: " << get_max(water_grid)
       << ", frame: " << z
       << ")"
     ;
