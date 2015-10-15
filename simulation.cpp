@@ -21,7 +21,8 @@ double GetRandomUniform()
 simulation::simulation()
   : plant_densities(1,1),
     water_concentrations(1,1),
-    t{0.0}
+    t{0.0},
+    step_couter{0}
 {
 
   const int width = 100; //Horizontal number of steps
@@ -31,6 +32,24 @@ simulation::simulation()
   //Initialize the grid with zeros
   //grid water_concentrations = create_initial_water_concentrations(parameters);
   water_concentrations = grid(width, height);
+  for(int x = 0; x < height; ++x)
+  {
+    for(int y = 0; y < width; ++y)
+    {
+      const double initial_water_concentration = 0.1;
+      water_concentrations.set(x, y, initial_water_concentration);
+    }
+  }
+  /*for(int x = 0; x < height; ++x)
+  {
+    for(int y = 0; y < width; ++y)
+    {
+      const double initial_water_concentration = GetRandomUniform();
+      assert(initial_water_concentration >= 0.0 && initial_water_concentration <= 1.0);
+      std::cout << initial_water_concentration << '\n';
+      water_concentrations.set(x, y, initial_water_concentration);
+    }
+  }*/
 
   //Create a 2D grid of plants
   //Initialize the grid with random numbers between 0 and 10 (not higher, because otherwise the
@@ -41,8 +60,8 @@ simulation::simulation()
   {
     for(int y = 0; y < width; ++y)
       {
-        const double initial_plant_density = GetRandomUniform() * 5.0;
-        assert(initial_plant_density >= 0.0 && initial_plant_density <= 5.0);
+        const double initial_plant_density = 4 + GetRandomUniform() * 5;
+        assert(initial_plant_density >= 4.0 && initial_plant_density <= 9.0);
         std::cout << initial_plant_density << '\n';
         plant_densities.set(x, y, initial_plant_density);
       }
@@ -70,7 +89,7 @@ void simulation::goto_next_timestep() {
     water_concentrations
   );
 
-  const int a = 0.94;          //Water is supplied uniformly at rate a (Grass (see article))
+  const double a = 2.0;    //Water is supplied uniformly at rate a (Grass (see article))
   const double v = 182.5;   //Water flows downhill at speed v
 
   //Create a 2D grid where the water concentration changes can be stored
@@ -102,11 +121,11 @@ void simulation::goto_next_timestep() {
   //Formula to calculate the change of plant density in time: dn/dt = w * n^2 - m * n + (d^2n/dx^2) + (d^2n/dy^2)
 
   //Create double differential equation (d^2n/dx^2)
-  const grid dndx = d_value_div_dx(height, width, delta_height, plant_densities);   // dn/dx+
-  const grid d2ndx2 = d_value_div_dx(height, width, delta_height, dndx);            // d^2n/dx^2
+  //const grid dndx = d_value_div_dx(height, width, delta_height, plant_densities);   // dn/dx+
+  //const grid d2ndx2 = d_value_div_dx(height, width, delta_height, dndx);            // d^2n/dx^2
   //Create double differential equation (d^2n/dy^2)
-  const grid dndy = d_value_div_dy(height, width, delta_width, plant_densities);   // dn/dy
-  const grid d2ndy2 = d_value_div_dy(height, width, delta_width, dndy);            // d^2n/dy^2
+  //const grid dndy = d_value_div_dy(height, width, delta_width, plant_densities);   // dn/dy
+  //const grid d2ndy2 = d_value_div_dy(height, width, delta_width, dndy);            // d^2n/dy^2
 
   //Create a 2D grid where the plant density changes can be stored
   //and calculate the plant_density_changes (dn/dt)
@@ -116,9 +135,9 @@ void simulation::goto_next_timestep() {
     width,
     water_concentrations,
     plant_densities,
-    d2ndx2,
-    d2ndy2,
-    delta_t
+    delta_t,
+    delta_height,
+    delta_width
   );
 
   //Create a 2D grid where the new plant densities can be stored
@@ -130,8 +149,11 @@ void simulation::goto_next_timestep() {
     plant_density_changes
   );
 
+  std::cout << new_plant_densities.get(3,47) << ' ';
+
   //Replace current grids by new grids
   water_concentrations = new_water_concentrations;
   plant_densities = new_plant_densities;
-}
 
+  ++step_couter;
+}

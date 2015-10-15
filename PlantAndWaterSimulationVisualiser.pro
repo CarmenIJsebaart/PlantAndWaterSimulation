@@ -1,4 +1,4 @@
-QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra -Weffc++ -Werror
+QMAKE_CXXFLAGS += -std=c++11 -Wall -Wextra -Werror
 
 SOURCES += \
     qtmain.cpp \

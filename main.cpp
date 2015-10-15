@@ -9,7 +9,6 @@
 #include <vector>
 #include <cassert>
 #include <ctime>
-
 #include "grid.h"
 #include "simulation.h"
 
@@ -33,21 +32,19 @@
 //
 
 
-
-
 int main()
 {
   simulation my_simulation;
 
-  const double simulation_time = 100.0;
+  const double simulation_time = 500;
 
   //For each time step
   while (my_simulation.get_current_time() < simulation_time)
   {
     std::cout << '.' << std::flush;
     my_simulation.goto_next_timestep();
-  } //End of the time loop
+  }
 
   return 0;
-} //End of the main function
+}
 

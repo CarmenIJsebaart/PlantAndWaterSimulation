@@ -1,8 +1,6 @@
 #ifndef SIMULATION_H
 #define SIMULATION_H
-
 #include <vector>
-
 #include "grid.h"
 
 class simulation {
@@ -17,20 +15,19 @@ private:
   grid water_concentrations;
   const double delta_t = 0.001;
   double t;
+  int step_couter;
 };
 
 //Differentiate equation to x
 grid d_value_div_dx(const int height, const int width, const double delta_height, grid input_grid);
-//Differentiate equation to y
-grid d_value_div_dy(const int height, const int width, const double delta_width, grid input_grid);
-grid calculate_water_concentration_changes(const int a, const double v, const int height, const int width,
+grid calculate_water_concentration_changes(const double a, const double v, const int height, const int width,
                                            grid water_concentrations, grid plant_densities,
                                            grid downflow_water_concentrations, const double delta_t);
 grid calculate_new_water_concentrations(const int height, const int width, grid water_concentrations,
                                         grid water_concentration_changes);
 grid calculate_plant_density_changes(const double plant_losses, const int height, const int width,
-                                     grid water_concentrations, grid plant_densities, grid d2ndx2,
-                                     grid d2ndy2, const double delta_t);
+                                     grid water_concentrations, grid plant_densities,const double delta_t,
+                                     const double delta_height, const double delta_width);
 grid calculate_new_plant_densities(const int height, const int width, grid plant_densities,
                                    grid plant_density_changes);
 

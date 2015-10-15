@@ -62,7 +62,7 @@ QtWidget::QtWidget(
   {
     QTimer * const timer{new QTimer(this)};
     QObject::connect(timer,SIGNAL(timeout()),this,SLOT(OnTimer()));
-    timer->setInterval(100);
+    timer->setInterval(1);
     timer->start();
   }
 }
@@ -85,13 +85,15 @@ void QtWidget::OnTimer()
   QImage image(width,height,QImage::Format_RGB32);
   const grid& plant_grid = m_simulation.get_plant_grid();
   const grid& water_grid = m_simulation.get_water_grid();
-  const double min_plants = 0.0;
-  const double max_plants = get_max(plant_grid) == 0.0 ? 1.0 : get_max(plant_grid);
+  const double min_plants = 7.5;
+  //const double max_plants = get_max(plant_grid) == 0.0 ? 1.0 : get_max(plant_grid);
+  const double max_plants = 9.0;
   assert(min_plants < max_plants);
   const double plants_range = max_plants - min_plants;
   assert(plants_range > 0.0);
   const double min_water = 0.0;
-  const double max_water = get_max(water_grid) == 0.0 ? 1.0 : get_max(water_grid);
+  //const double max_water = get_max(water_grid) == 0.0 ? 1.0 : get_max(water_grid);
+  const double max_water = 1000.0;
   assert(min_water < max_water);
   const double water_range = max_water - min_water;
   assert(water_range > 0.0);
@@ -115,10 +117,10 @@ void QtWidget::OnTimer()
     {
       const double p = plant_grid.get(x,y);
       const double f_g = ((p - min_plants) / plants_range);
-      const int g = static_cast<int>(f_g * 255.0);
+      const int g = std::min(255,static_cast<int>(f_g * 255.0));
       const double w = water_grid.get(x,y);
       const double f_w = ((w - min_water) / water_range);
-      const int b = static_cast<int>(f_w * 255.0);
+      const int b = std::min(255,static_cast<int>(f_w * 255.0));
       image.setPixel(x,y,qRgb(0,g,b));
     }
   }
