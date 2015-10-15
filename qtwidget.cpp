@@ -91,7 +91,9 @@ QtWidget::~QtWidget()
 void QtWidget::OnTimer()
 {
   static int z = 0;
-  for (int i=0; i!=100; ++i) {
+
+  const int n_repeats = 1;
+  for (int i=0; i!=n_repeats; ++i) {
     ++z;
     m_simulation.goto_next_timestep();
   }
@@ -154,6 +156,6 @@ void QtWidget::paintEvent(QPaintEvent *)
   QPainter painter(this);
   painter.drawPixmap(
     this->rect(),
-    m_pixmap//QPixmap::fromImage(*m_image)
+    m_pixmap
   );
 }

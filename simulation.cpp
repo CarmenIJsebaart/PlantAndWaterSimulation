@@ -79,7 +79,7 @@ void simulation::goto_next_timestep() {
   ///////////////////////////////////////////////
   const double delta_height = 0.5; //Stepsize downhill
   const double delta_width = 0.5;  //Stepsize horizontally
-  const double m = 0.45; //Grass (see article)
+  const double m = 1.0; //Grass (see article)
   const int height = water_concentrations.get_height();
   const int width = water_concentrations.get_width();
   //Formula to calculate the change of water concentration in time: dw/dt = a - w - w * n^2 + v * (dw/dx)

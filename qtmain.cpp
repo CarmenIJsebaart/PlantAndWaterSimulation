@@ -8,9 +8,10 @@ int main(int argc, char *argv[])
   QtWidget w;
   {
     const QRect screen = QApplication::desktop()->screenGeometry();
+    w.setGeometry(0,0,screen.height() * 8 / 10,screen.height() * 8 / 10);
     w.move( screen.center() - w.rect().center() );
   }
-  w.setWindowState(Qt::WindowMaximized);
+  //w.setWindowState(Qt::WindowMaximized);
   w.show();
   return a.exec();
 }
