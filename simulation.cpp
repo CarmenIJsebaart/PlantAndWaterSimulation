@@ -1,6 +1,6 @@
 #include <cassert>
 #include <random>
-#include <iostream>
+//#include <iostream>
 #include "simulation.h"
 
 ///GetRandomUniform draws a random number from 0.0 to and excluding 1.0.
@@ -21,11 +21,10 @@ double GetRandomUniform()
 simulation::simulation()
   : plant_densities(1,1),
     water_concentrations(1,1),
-    t{0.0},
-    step_couter{0}
+    t{0.0}
 {
 
-  const int width = 100; //Horizontal number of steps
+  const int width  = 100; //Horizontal number of steps
   const int height = 100; //Vertical number of steps
 
   //Create a 2D grid of water
@@ -60,9 +59,14 @@ simulation::simulation()
   {
     for(int y = 0; y < width; ++y)
       {
-        const double initial_plant_density = 4 + GetRandomUniform() * 5;
-        assert(initial_plant_density >= 4.0 && initial_plant_density <= 9.0);
-        std::cout << initial_plant_density << '\n';
+        const double initial_plant_density = (GetRandomUniform() * 10.0);
+        //const int n_hills = 4;
+        //const double xco = static_cast<double>(n_hills) * 2.0 * 3.14159265 * static_cast<double>(x) / width;
+        //const double yco = static_cast<double>(n_hills) * 2.0 * 3.14159265 * static_cast<double>(y) / height;
+        //const double initial_plant_density = 4.0 + (2.0 * std::sin(xco)) + (2.0 * std::cos(yco))
+        //    + (GetRandomUniform() * 2.0);
+        //assert(initial_plant_density >= 4.0 && initial_plant_density <= 9.0);
+        //std::cout << initial_plant_density << '\n';
         plant_densities.set(x, y, initial_plant_density);
       }
   }
@@ -149,11 +153,10 @@ void simulation::goto_next_timestep() {
     plant_density_changes
   );
 
-  std::cout << new_plant_densities.get(3,47) << ' ';
+  //std::cout << new_plant_densities.get(3,47) << ' ';
 
   //Replace current grids by new grids
   water_concentrations = new_water_concentrations;
   plant_densities = new_plant_densities;
-
-  ++step_couter;
+  t += delta_t;
 }
