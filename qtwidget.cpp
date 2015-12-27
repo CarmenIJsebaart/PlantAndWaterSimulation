@@ -114,7 +114,7 @@ void QtWidget::OnTimer()
   assert(plants_range > 0.0);
   const double min_water = 0.0;
   //const double max_water = get_max(water_grid) == 0.0 ? 1.0 : get_max(water_grid);
-  const double max_water = 10000.0;
+  const double max_water = 1.0;
   assert(min_water < max_water);
   const double water_range = max_water - min_water;
   assert(water_range > 0.0);

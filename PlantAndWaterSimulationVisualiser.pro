@@ -4,6 +4,7 @@ SOURCES += \
     qtmain.cpp \
     qtwidget.cpp \
     simulation.cpp \
+    print.cpp \
     grid.cpp
 
 FORMS += \
@@ -12,6 +13,7 @@ FORMS += \
 HEADERS += \
     qtwidget.h \
     simulation.h \
+    print.h \
     grid.h
 
 QT       += core gui
@@ -27,5 +29,4 @@ CONFIG(release, debug|release) {
   message(Release mode)
   DEFINES += NDEBUG
 }
-
 

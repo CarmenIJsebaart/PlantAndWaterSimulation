@@ -5,7 +5,12 @@
 #include <vector>
 class grid {
 public:
-    grid(const int width, const int height)
+    static const int width = 100; //Horizontal number of steps
+    static const int height = 100; //Vertical number of steps
+    static constexpr double delta_height = 0.5; //Stepsize downhill
+    static constexpr double delta_width = 0.5;  //Stepsize horizontally
+
+    grid()
       : m_v(height,std::vector<double>(width,0.0))
   {
       assert(width == get_width());
@@ -18,6 +23,7 @@ public:
   }
   double get(const int x, const int y) const {
     assert(x >= 0);
+    assert(height == get_height());
     assert(x < get_height());
     assert(y >= 0);
     assert(y < get_width());

@@ -6,10 +6,12 @@ CONFIG -= qt
 SOURCES += \
     main.cpp \
     grid.cpp \
+    print.cpp \
     simulation.cpp
 
 HEADERS += \
   grid.h \
+  print.h \
   simulation.h
 
 QMAKE_CXXFLAGS += -Wall -Wextra -Weffc++ -Werror
@@ -20,4 +22,3 @@ QMAKE_CXXFLAGS += -std=c++11
 
 include(deployment.pri)
 qtcAddDeployment()
-

@@ -7,7 +7,7 @@ grid d_value_div_dx(
     const double delta_height,
     const grid& input_grid)
 {
-  grid output_grid (width, height);
+  grid output_grid;
   double output_value;
   assert(delta_height != 0.0);
   for(int y = 0; y < width; ++y)
@@ -33,7 +33,7 @@ grid calculate_water_concentration_changes(
     const double delta_t)
 {
   assert(delta_t > 0.0);
-  grid water_concentration_changes(width, height);
+  grid water_concentration_changes;
   for(int x = 0; x < height; ++x)
   {
     for(int y = 0; y < width; ++y)
@@ -54,7 +54,7 @@ grid calculate_new_water_concentrations(
     const grid& water_concentrations,
     const grid& water_concentration_changes)
 {
-  grid new_water_concentrations (width, height);
+  grid new_water_concentrations;
   for(int x = 0; x < height; ++x)
   {
     for(int y = 0; y < width; ++y)
@@ -81,7 +81,7 @@ grid calculate_plant_density_changes(
     const double delta_width
 )
 {
-  grid plant_density_changes (width, height);
+  grid plant_density_changes;
   for(int x = 0; x < height; ++x)
   {
     for(int y = 0; y < width; ++y)
@@ -109,7 +109,7 @@ grid calculate_new_plant_densities(
     const grid& plant_density_changes
 )
 {
-  grid new_plant_densities(width, height);
+  grid new_plant_densities;
   for(int x = 0; x < height; ++x)
   {
     for(int y = 0; y < width; ++y)
@@ -127,4 +127,3 @@ grid calculate_new_plant_densities(
   }
   return new_plant_densities;
 }
-
